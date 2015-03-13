@@ -1,4 +1,4 @@
-__author__ = 'ForcesOfOdin'
+__author__ = 'Steven Sarasin'
 
 
 class Stack:
