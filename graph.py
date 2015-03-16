@@ -2,20 +2,20 @@ __author__ = 'Steven Sarasin'
 
 
 class Node:
-    def __init__(self, value):
-        self.value = value
+    def __init__(self, cargo):
+        self.cargo = cargo
         self.color = "white"
         self.dist = float("inf")
         self.prev = None
 
     def __str__(self):
-        return str(self.value)
+        return str(self.cargo)
 
     def __int__(self):
-        return int(self.value)
+        return int(self.cargo)
 
     def __float__(self):
-        return float(self.value)
+        return float(self.cargo)
 
     def __lt__(self, other):
         return float(self) < float(other)
@@ -27,7 +27,7 @@ class Node:
         return float(self) == float(other)
 
     def __hash__(self):
-        return hash(self.value)
+        return hash(self.cargo)
 
 
 def BFS(graph, source):
