@@ -26,7 +26,7 @@ class Stack:
         return self.items[-1]
 
 
-class Queue:
+class ListQueue:
     def __init__(self):
         self.items = []
 
@@ -64,7 +64,14 @@ class Node:
         return str(self.cargo)
 
 
-class Queue2:
+def get_node_cargo(node):
+        while node:
+            yield node.cargo
+            node = node.next
+        return
+
+
+class Queue:
     def __init__(self):
         self.length = 0
         self.head = None
@@ -76,13 +83,13 @@ class Queue2:
 
     # O(1)
     def is_empty(self):
-        return self.length is 0
+        return self.length == 0
 
     # O(1)
     def enqueue(self, cargo):
         node = Node(cargo)
         node.next = None
-        if self.length is 0:
+        if self.length == 0:
             self.head = node
             self.last = self.head
             self.length += 1
@@ -93,7 +100,7 @@ class Queue2:
 
     # O(1)
     def dequeue(self):
-        if self.length is 0:
+        if self.length == 0:
             return None
         else:
             cargo = self.head.cargo
@@ -102,16 +109,13 @@ class Queue2:
             return cargo
 
     def __str__(self):
-        string = []
         node = self.head
-        while node:
-            string.append(str(node.cargo))
-            node = node.next
-        return str(string)
+        p = get_node_cargo(node)
+        return str(list(p))
 
 if __name__ == "__main__":
-    q = Queue()
-    q2 = Queue2()
+    q = ListQueue()
+    q2 = Queue()
     
     q.enqueue('a')
     q2.enqueue('a')
