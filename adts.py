@@ -47,3 +47,103 @@ class Queue:
         item = self.items[0]
         self.items.remove(item)
         return item
+
+    def __str__(self):
+        return str(self.items)
+
+
+class Node:
+    def __init__(self, cargo=None, next=None):
+        self.cargo = cargo
+        self.next = next
+
+    def __str__(self):
+        return str(self.cargo)
+
+
+class Queue2:
+    def __init__(self):
+        self.length = 0
+        self.head = None
+        self.last = None
+
+    # O(1)
+    def size(self):
+        return self.length
+
+    # O(1)
+    def is_empty(self):
+        return self.length is 0
+
+    # O(1)
+    def enqueue(self, cargo):
+        node = Node(cargo)
+        node.next = None
+        if self.length is 0:
+            self.head = node
+            self.last = self.head
+            self.length += 1
+        else:
+            self.last.next = node
+            self.last = node
+            self.length += 1
+
+    # O(1)
+    def dequeue(self):
+        if self.length is 0:
+            return None
+        else:
+            cargo = self.head.cargo
+            self.head = self.head.next
+            self.length -= 1
+            return cargo
+
+    def __str__(self):
+        string = []
+        node = self.head
+        while node:
+            string.append(str(node.cargo))
+            node = node.next
+        return str(string)
+
+if __name__ == "__main__":
+    q = Queue()
+    q2 = Queue2()
+    
+    q.enqueue('a')
+    q2.enqueue('a')
+    
+    print "q:", q, "q.size() =", q.size()
+    print "q2:", q2, "q2.size() =", q2.size()
+    
+    q.enqueue('b')
+    q2.enqueue('b')
+    q.enqueue('c')
+    q2.enqueue('c')
+
+    print "q:", q, "q.size() =", q.size()
+    print "q2:", q2, "q2.size() =", q2.size()
+
+    print "q is empty:", str(q.is_empty())
+    print "q2 is empty:", str(q2.is_empty())
+
+    q.dequeue()
+    q2.dequeue()
+
+    print "q:", q, "q.size() =", q.size()
+    print "q2:", q2, "q2.size() =", q2.size()
+
+    q.dequeue()
+    q2.dequeue()
+
+    print "q:", q, "q.size() =", q.size()
+    print "q2:", q2, "q2.size() =", q2.size()
+
+    q.dequeue()
+    q2.dequeue()
+
+    print "q:", q, "q.size() =", q.size()
+    print "q2:", q2, "q2.size() =", q2.size()
+
+    print "q is empty:", str(q.is_empty())
+    print "q2 is empty:", str(q2.is_empty())
