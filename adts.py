@@ -44,9 +44,12 @@ class Queue:
 
     # O(n)
     def dequeue(self):
-        item = self.items[0]
-        self.items.remove(item)
-        return item
+        if self.size() == 0:
+            return None
+        else:
+            item = self.items[0]
+            self.items.remove(item)
+            return item
 
     def __str__(self):
         return str(self.items)
@@ -147,3 +150,6 @@ if __name__ == "__main__":
 
     print "q is empty:", str(q.is_empty())
     print "q2 is empty:", str(q2.is_empty())
+
+    q.dequeue()
+    q2.dequeue()
