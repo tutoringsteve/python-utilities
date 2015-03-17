@@ -114,46 +114,47 @@ class Queue:
         return str(list(p))
 
 if __name__ == "__main__":
-    q = ListQueue()
-    q2 = Queue()
-    
-    q.enqueue('a')
-    q2.enqueue('a')
-    
-    print "q:", q, "q.size() =", q.size()
-    print "q2:", q2, "q2.size() =", q2.size()
-    
-    q.enqueue('b')
-    q2.enqueue('b')
-    q.enqueue('c')
-    q2.enqueue('c')
 
-    print "q:", q, "q.size() =", q.size()
-    print "q2:", q2, "q2.size() =", q2.size()
+    print "\nTESTING class ListQueue: instance called list_q."
+    list_q = ListQueue()
+    list_q.enqueue('a')
+    print "	list_q:", list_q, "list_q.size() ==", list_q.size()
+    list_q.enqueue('b')
+    list_q.enqueue('c')
+    print "	list_q:", list_q, "list_q.size() ==", list_q.size()
+    print "	list_q is empty:", str(list_q.is_empty())
+    list_q.dequeue()
+    print "	list_q:", list_q, "list_q.size() ==", list_q.size()
+    list_q.dequeue()
+    print "	list_q:", list_q, "list_q.size() ==", list_q.size()
+    list_q.dequeue()
+    print "	list_q:", list_q, "list_q.size() ==", list_q.size()
+    print "	list_q is empty:", str(list_q.is_empty())
+    print "	list_q.dequeue() ==", str(list_q.dequeue())
+    print "FINISHED TESTING ListQueue"
 
-    print "q is empty:", str(q.is_empty())
-    print "q2 is empty:", str(q2.is_empty())
+    print "\nTESTING class Queue: instance called link_q."
+    link_q = Queue()
+    link_q.enqueue('a')
+    print "	link_q:", link_q, "link_q.size() ==", link_q.size()
+    link_q.enqueue('b')
+    link_q.enqueue('c')
+    print "	link_q:", link_q, "link_q.size() ==", link_q.size()
+    print "	link_q is empty:", str(link_q.is_empty())
+    link_q.dequeue()
+    print "	link_q:", link_q, "link_q.size() ==", link_q.size()
+    link_q.dequeue()
+    print "	link_q:", link_q, "link_q.size() ==", link_q.size()
+    link_q.dequeue()
+    print "	link_q:", link_q, "link_q.size() ==", link_q.size()
+    print "	link_q is empty:", str(link_q.is_empty())
+    link_q.dequeue()
+    print "	link_q is empty:", str(link_q.is_empty())
+    print "	link_q.dequeue() ==", str(link_q.dequeue())
+    print "FINISHED TESTING Queue"
 
-    q.dequeue()
-    q2.dequeue()
 
-    print "q:", q, "q.size() =", q.size()
-    print "q2:", q2, "q2.size() =", q2.size()
 
-    q.dequeue()
-    q2.dequeue()
 
-    print "q:", q, "q.size() =", q.size()
-    print "q2:", q2, "q2.size() =", q2.size()
 
-    q.dequeue()
-    q2.dequeue()
 
-    print "q:", q, "q.size() =", q.size()
-    print "q2:", q2, "q2.size() =", q2.size()
-
-    print "q is empty:", str(q.is_empty())
-    print "q2 is empty:", str(q2.is_empty())
-
-    q.dequeue()
-    q2.dequeue()
