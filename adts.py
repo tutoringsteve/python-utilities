@@ -19,11 +19,20 @@ class Stack:
 
     # O(1)
     def pop(self):
-        return self.items.pop()
+        if self.is_empty():
+            raise RuntimeError("Popped an empty stack")
+        else:
+            return self.items.pop()
 
     # O(1)
     def peek(self):
-        return self.items[-1]
+        if self.is_empty():
+            raise RuntimeError("Peeked on an empty stack")
+        else:
+            return self.items[-1]
+
+    def __str__(self):
+        return str(self.items)
 
 
 class ListQueue:
