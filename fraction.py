@@ -105,43 +105,45 @@ class Fraction:
     def __int__(self):
         return self.num / self.den
 
-my_frac = Fraction(3, 5)
-f1 = Fraction(1, 2)
-f2 = Fraction(1, 3)
-print Fraction(1, 2) * my_frac
-f3 = f1 + f2
-print f3
-print Fraction(3, 3)
-print Fraction(2, 4) == Fraction(1, 2)
-print Fraction(1, 3) - Fraction(12, 24)
+if __name__ == "__main__":
 
-print f1, " > ", f2, f1 > f2
-print f1, " < ", f2, f1 < f2
-print f1, " == ", f2, f1 == f2
-print Fraction(1.3, -2.1)
-print Fraction(1.3 / 2.1)
-f = Fraction(3.2)
-print f, "=", float(f), "about =", int(f)
+    my_frac = Fraction(3, 5)
+    f1 = Fraction(1, 2)
+    f2 = Fraction(1, 3)
+    print Fraction(1, 2) * my_frac
+    f3 = f1 + f2
+    print f3
+    print Fraction(3, 3)
+    print Fraction(2, 4) == Fraction(1, 2)
+    print Fraction(1, 3) - Fraction(12, 24)
 
-print "\\frac{1}{3} * 3 = ", Fraction(1, 3) * 3
-print "3 * \\frac{1}{3} = ", 3 * Fraction(1, 3)
-print "\\frac{1}{3} * 3 = ", Fraction(1, 3) * 3
-print "3 / \\frac{1}{2} = ", 3 / Fraction(1, 2)
-print "\\frac{1}{3} / 3 = ", Fraction(1, 3) / 3
-print "3 - \\frac{1}{3} = ", 3 - Fraction(1, 3)
-print "\\frac{1}{3} - 3 = ", Fraction(1, 3) - 3
-print "3 + \\frac{1}{3} = ", 3 + Fraction(1, 3)
-print "\\frac{1}{3} + 3 = ", Fraction(1, 3) + 3
-print "-\\frac{3}{1} = ", -Fraction(3, 1)
-print "\\frac{1}{3} - \\frac{1}{3} = ", Fraction(1, 3)-Fraction(1, 3)
-print "\\frac{1}{3} + \\frac{1}{3} = ", Fraction(1, 3) + Fraction(1, 3)
-print "\\frac{1}{3} + 1 = ", Fraction(1, 3) + 1
-print "\\frac{3}{1} + \\frac{1}{3} = ", Fraction(3, 1) + Fraction(1, 3)
-print "\\frac{1}{2} - \\frac{1}{3} = ", Fraction(3, 2) - Fraction(1, 3)
-print "\\frac{3}{1} - \\frac{1}{3} = ", Fraction(3, 1) + Fraction(1, 2)
-print "\\frac{2}{1} - \\frac{1}{2} = ", Fraction(3, 1) - Fraction(1, 2)
-print "-\\frac{1}{3} = ", -Fraction(1, 3)
-print "\\frac{3}{1} = ", Fraction(3, 1)
-print "\\frac{4}{1} - \\frac{1}{3} = ", Fraction(4, 1) - Fraction(1, 3)
-print "3 > frac(2,1) is ", 3 > Fraction(2, 1)
-print Fraction(2, 1).tex_frac()
+    print f1, " > ", f2, f1 > f2
+    print f1, " < ", f2, f1 < f2
+    print f1, " == ", f2, f1 == f2
+    print Fraction(1.3, -2.1)
+    print Fraction(1.3 / 2.1)
+    f = Fraction(3.2)
+    print f, "=", float(f), "about =", int(f)
+
+    print "\\frac{1}{3} * 3 = ", Fraction(1, 3) * 3
+    print "3 * \\frac{1}{3} = ", 3 * Fraction(1, 3)
+    print "\\frac{1}{3} * 3 = ", Fraction(1, 3) * 3
+    print "3 / \\frac{1}{2} = ", 3 / Fraction(1, 2)
+    print "\\frac{1}{3} / 3 = ", Fraction(1, 3) / 3
+    print "3 - \\frac{1}{3} = ", 3 - Fraction(1, 3)
+    print "\\frac{1}{3} - 3 = ", Fraction(1, 3) - 3
+    print "3 + \\frac{1}{3} = ", 3 + Fraction(1, 3)
+    print "\\frac{1}{3} + 3 = ", Fraction(1, 3) + 3
+    print "-\\frac{3}{1} = ", -Fraction(3, 1)
+    print "\\frac{1}{3} - \\frac{1}{3} = ", Fraction(1, 3)-Fraction(1, 3)
+    print "\\frac{1}{3} + \\frac{1}{3} = ", Fraction(1, 3) + Fraction(1, 3)
+    print "\\frac{1}{3} + 1 = ", Fraction(1, 3) + 1
+    print "\\frac{3}{1} + \\frac{1}{3} = ", Fraction(3, 1) + Fraction(1, 3)
+    print "\\frac{1}{2} - \\frac{1}{3} = ", Fraction(3, 2) - Fraction(1, 3)
+    print "\\frac{3}{1} - \\frac{1}{3} = ", Fraction(3, 1) + Fraction(1, 2)
+    print "\\frac{2}{1} - \\frac{1}{2} = ", Fraction(3, 1) - Fraction(1, 2)
+    print "-\\frac{1}{3} = ", -Fraction(1, 3)
+    print "\\frac{3}{1} = ", Fraction(3, 1)
+    print "\\frac{4}{1} - \\frac{1}{3} = ", Fraction(4, 1) - Fraction(1, 3)
+    print "3 > frac(2,1) is ", 3 > Fraction(2, 1)
+    print Fraction(2, 1).tex_frac()
