@@ -141,6 +141,7 @@ class StackTest(unittest.TestCase):
         self.assertEqual("third", self.s.pop(), "'third' not popped first")
         self.assertEqual("second", self.s.pop(), "'second' not popped second")
         self.assertEqual("first", self.s.pop(), "'first' not popped third")
+
     def test_stack_converts_to_string_equivalent_to_string_conversion_of_a_list_of_all_its_elements(self):
         elements = ['a', 'b', 1, 2]
         for cargo in elements:

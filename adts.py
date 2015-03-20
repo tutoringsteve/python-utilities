@@ -64,7 +64,7 @@ class ListQueue:
         return str(self.items)
 
 
-class Node:
+class QueueNode:
     def __init__(self, cargo=None, next=None):
         self.cargo = cargo
         self.next = next
@@ -73,7 +73,7 @@ class Node:
         return str(self.cargo)
 
 
-def get_node_cargo(node):
+def get_queue_node_cargo(node):
         while node:
             yield node.cargo
             node = node.next
@@ -96,7 +96,7 @@ class Queue:
 
     # O(1)
     def enqueue(self, cargo):
-        node = Node(cargo)
+        node = QueueNode(cargo)
         node.next = None
         if self.length == 0:
             self.head = node
@@ -119,5 +119,5 @@ class Queue:
 
     def __str__(self):
         node = self.head
-        p = get_node_cargo(node)
+        p = get_queue_node_cargo(node)
         return str(list(p))
