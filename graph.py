@@ -58,36 +58,39 @@ class Graph:
         if b not in self.get_adjacent_nodes(a):
             self.nodes[a].add_adjacent_node(b)
             self.total_edges += 1
-        else:
-            raise KeyError("attempted to add edge comprised of node(s) not in the graph")
 
     def get_adjacent_nodes(self, key):
         if key in self.nodes.keys():
             return self.nodes[key].adjacent_nodes
 
-def BFS(graph, source):
-    from adts import Queue
 
-    for node in graph.keys():
-        if node is not source:
+def BFS(graph, source_key):
+    from adts import Queue
+    searched_nodes = []
+    source_node = graph.get_node(source_key)
+    for key in graph.nodes.keys():
+        node = graph.get_node(key)
+        if key is not source_key:
             node.color = "white"
             node.dist = float("inf")
             node.predecessor = None
-    source.color = "grey"
-    source.dist = 0
-    source.predecessor = None
+    source_node.color = "grey"
+    source_node.dist = 0
+    source_node.predecessor = None
     q = Queue()
-    q.enqueue(source)
+    q.enqueue(source_node)
     while q.size() is not 0:
         node = q.dequeue()
-        for child in graph[node]:
+        for child in graph.get_adjacent_nodes(node.get_key()):
+            child = graph.get_node(child)
             if child.color is "white":
                 child.dist = node.dist + 1
                 child.predecessor = node
                 child.color = "grey"
                 q.enqueue(child)
         node.color = "black"
-        print node.cargo
+        searched_nodes += [node.get_key()]
+    print list(set(searched_nodes))
 
 
 if __name__ == "__main__":
@@ -130,3 +133,5 @@ if __name__ == "__main__":
     for n in xrange(chunks):
         print x[n:n+pairs_per_line]
     print x[-(remainder + 1):-1]
+
+    BFS(g, 32)
