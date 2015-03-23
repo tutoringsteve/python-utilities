@@ -4,9 +4,9 @@ __author__ = 'Steven Sarasin'
 class GraphNode:
     def __init__(self, key):
         self.key = key
-        # adjacent_node key : weight to adjacent_node dictionary
+        # { adjacent_node.source_key : weight from node to adjacent_node }
         self.adjacent_nodes = {}
-        #used for Depth First Search and Path Finding
+        # used for Breadth First Search and Path Finding
         self.color = "white"
         self.dist = float("inf")
         self.prev = None
@@ -33,7 +33,7 @@ class GraphNode:
 
 class Graph:
     def __init__(self):
-        # key : GraphNode dictionary
+        # source_key : GraphNode dictionary
         self.nodes = {}
         self.total_nodes = 0
         self.total_edges = 0
@@ -48,7 +48,7 @@ class Graph:
         if key in self.nodes.keys():
             return self.nodes[key]
         else:
-            raise KeyError("key not found in nodes")
+            raise KeyError("source_key not found in nodes")
 
     def add_edge(self, a, b):
         if a not in self.nodes.keys():
@@ -66,10 +66,13 @@ class Graph:
 
 def BFS(graph, source_key):
     from adts import Queue
-    searched_nodes = []
-    source_node = graph.get_node(source_key)
-    for key in graph.nodes.keys():
-        node = graph.get_node(key)
+    from copy import deepcopy
+
+    graph_deep_copy = deepcopy(graph)
+    searched_nodes = set()
+    source_node = graph_deep_copy.get_node(source_key)
+    for key in graph_deep_copy.nodes.keys():
+        node = graph_deep_copy.get_node(key)
         if key is not source_key:
             node.color = "white"
             node.dist = float("inf")
@@ -79,18 +82,25 @@ def BFS(graph, source_key):
     source_node.predecessor = None
     q = Queue()
     q.enqueue(source_node)
-    while q.size() is not 0:
+    while q.size() > 0:
         node = q.dequeue()
-        for child in graph.get_adjacent_nodes(node.get_key()):
-            child = graph.get_node(child)
+        for child in graph_deep_copy.get_adjacent_nodes(node.get_key()):
+            child = graph_deep_copy.get_node(child)
             if child.color is "white":
                 child.dist = node.dist + 1
                 child.predecessor = node
                 child.color = "grey"
                 q.enqueue(child)
         node.color = "black"
-        searched_nodes += [node.get_key()]
-    print list(set(searched_nodes))
+        searched_nodes.add(node)
+    return searched_nodes
+
+
+def gen_all_keys_in_dic_with_dist_d(dic_and_d):
+    dic, d = dic_and_d
+    for key in dic:
+        if dic[key] == d:
+            yield key
 
 
 if __name__ == "__main__":
@@ -114,24 +124,37 @@ if __name__ == "__main__":
         for b in adj_graph[a]:
             g.add_edge(a, b)
 
-    for a in g.nodes.keys():
-        for b in g.get_adjacent_nodes(a):
-            print("( %s , %s )" % (a, b))
+    # matches each source_key in the adj_graph to the BFS results when run using that source_key as a source
+    source_key_to_BFS_results = {key: (BFS(g, key)) for key in adj_graph}
+    for key in source_key_to_BFS_results:
+        print key, ":", list(node.get_key() for node in source_key_to_BFS_results[key])
+    for key in adj_graph:
+        BFS(g, key)
 
-    def generator(g, a, b):
-        for a in g.nodes.keys():
-            for b in g.get_adjacent_nodes(a):
-                yield ("( %s , %s )" % (a, b))
+    # matches each source for a BFS in the adj_graph to a dictionary matching each source_key with the dist to the source as computed from the BFS
+    key_to_BFS_results_as_key_to_dist = {
+        source_key: {node.get_key(): node.dist for node in source_key_to_BFS_results[source_key]}
+        for source_key in adj_graph}
 
-    x = list(generator(g, a, b))
-    print len(x)
-    #for element in x: print element
-    pairs_per_line = 6
-    chunks = len(x) // pairs_per_line
-    remainder = len(x) % pairs_per_line
-    print chunks, remainder
-    for n in xrange(chunks):
-        print x[n:n+pairs_per_line]
-    print x[-(remainder + 1):-1]
+    # uses every source_key in adj_graph as a source for BFS,
+    # and matches that source source_key to a dictionary matching
+    # the distances from the source to the keys in adj_graph
+    # that were that distance from the source source_key
 
-    BFS(g, 32)
+    key_to_BFS_results_as_dist_to_key = {}
+    for key in adj_graph:
+        dic = key_to_BFS_results_as_key_to_dist[key]
+        dic2 = {d: list(gen_all_keys_in_dic_with_dist_d((dic, d))) for d in dic.values()}
+        key_to_BFS_results_as_dist_to_key[key] = dic2
+    print key_to_BFS_results_as_key_to_dist
+    print key_to_BFS_results_as_dist_to_key
+
+    # test dic keys are nodes in the graph and the values are the distance from a source node used in a BFS on the graph
+    dic = {0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1,
+           17: 1, 18: 4, 19: 5, 20: 5, 21: 5, 22: 4, 23: 3, 24: 3, 25: 4, 26: 5, 27: 5, 28: 3, 29: 4, 30: 4, 31: 4,
+           32: 3, 33: 2, 34: 2, 35: 2, 36: 3, 37: 2}
+    # testing a dictionary comprehension using a generator
+    # for values to accumulate all the nodes in the graph
+    # that were a dist d from the source node of a BFS search
+    dic2 = {d: list(gen_all_keys_in_dic_with_dist_d((dic, d))) for d in dic.values()}
+    # print dic2
