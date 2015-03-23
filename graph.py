@@ -76,10 +76,10 @@ def BFS(graph, source_key):
         if key is not source_key:
             node.color = "white"
             node.dist = float("inf")
-            node.predecessor = None
+            node.prev = None
     source_node.color = "grey"
     source_node.dist = 0
-    source_node.predecessor = None
+    source_node.prev = None
     q = Queue()
     q.enqueue(source_node)
     while q.size() > 0:
@@ -88,7 +88,7 @@ def BFS(graph, source_key):
             child = graph_deep_copy.get_node(child)
             if child.color is "white":
                 child.dist = node.dist + 1
-                child.predecessor = node
+                child.prev = node
                 child.color = "grey"
                 q.enqueue(child)
         node.color = "black"
@@ -136,6 +136,27 @@ if __name__ == "__main__":
         source_key: {node.get_key(): node.dist for node in source_key_to_BFS_results[source_key]}
         for source_key in adj_graph}
 
+    #testing arbitrary nodes for their node.prev tree, which should give shortest paths
+    from copy import deepcopy
+    searched_nodes = deepcopy(source_key_to_BFS_results[0])
+    target_node = searched_nodes.pop()
+    #searching for a node with dist 5 for longer path to examine in the search results of BFS on graph with source node key 0
+    while target_node.dist != 5:
+        target_node = searched_nodes.pop()
+    target_node2 = deepcopy(target_node)
+
+    while target_node.prev:
+        print "key", target_node.get_key(), "dist", target_node.dist
+        target_node = target_node.prev
+
+    def get_path_to_node(node):
+        while node:
+            yield node.get_key()
+            node = node.prev
+        return
+
+    path_lst = list(get_path_to_node(target_node2)) #works
+    print path_lst
     # uses every source_key in adj_graph as a source for BFS,
     # and matches that source source_key to a dictionary matching
     # the distances from the source to the keys in adj_graph
