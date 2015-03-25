@@ -11,9 +11,6 @@ class GraphNode:
         self.dist = float("inf")
         self.prev = None
 
-    def get_key(self):
-        return self.key
-
     def add_adjacent_node(self, adj_node, weight=0):
         if adj_node not in self.adjacent_nodes:
             self.adjacent_nodes[adj_node] = weight
@@ -84,7 +81,7 @@ def BFS(graph, source_key):
     q.enqueue(source_node)
     while q.size() > 0:
         node = q.dequeue()
-        for child in graph_deep_copy.get_adjacent_nodes(node.get_key()):
+        for child in graph_deep_copy.get_adjacent_nodes(node.key):
             child = graph_deep_copy.get_node(child)
             if child.color is "white":
                 child.dist = node.dist + 1
@@ -127,13 +124,13 @@ if __name__ == "__main__":
     # matches each source_key in the adj_graph to the BFS results when run using that source_key as a source
     source_key_to_BFS_results = {key: (BFS(g, key)) for key in adj_graph}
     for key in source_key_to_BFS_results:
-        print key, ":", list(node.get_key() for node in source_key_to_BFS_results[key])
+        print key, ":", list(node.key for node in source_key_to_BFS_results[key])
     for key in adj_graph:
         BFS(g, key)
 
     # matches each source for a BFS in the adj_graph to a dictionary matching each source_key with the dist to the source as computed from the BFS
     key_to_BFS_results_as_key_to_dist = {
-        source_key: {node.get_key(): node.dist for node in source_key_to_BFS_results[source_key]}
+        source_key: {node.key: node.dist for node in source_key_to_BFS_results[source_key]}
         for source_key in adj_graph}
 
     #testing arbitrary nodes for their node.prev tree, which should give shortest paths
@@ -146,12 +143,12 @@ if __name__ == "__main__":
     target_node2 = deepcopy(target_node)
 
     while target_node.prev:
-        print "key", target_node.get_key(), "dist", target_node.dist
+        print "key", target_node.key, "dist", target_node.dist
         target_node = target_node.prev
 
     def get_path_to_node(node):
         while node:
-            yield node.get_key()
+            yield node.key
             node = node.prev
         return
 
