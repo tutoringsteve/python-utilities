@@ -36,28 +36,28 @@ class Graph:
         self.total_edges = 0
 
     def add_node(self, key):
-        if key not in self.nodes.keys():
+        if key not in self.nodes:
             self.nodes[key] = GraphNode(key)
             self.total_nodes += 1
         return self.nodes[key]
 
     def get_node(self, key):
-        if key in self.nodes.keys():
+        if key in self.nodes:
             return self.nodes[key]
         else:
             raise KeyError("source_key not found in nodes")
 
     def add_edge(self, a, b):
-        if a not in self.nodes.keys():
+        if a not in self.nodes:
             self.add_node(a)
-        if b not in self.nodes.keys():
+        if b not in self.nodes:
             self.add_node(b)
         if b not in self.get_adjacent_nodes(a):
             self.nodes[a].add_adjacent_node(b)
             self.total_edges += 1
 
     def get_adjacent_nodes(self, key):
-        if key in self.nodes.keys():
+        if key in self.nodes:
             return self.nodes[key].adjacent_nodes
 
 
@@ -68,7 +68,7 @@ def BFS(graph, source_key):
     graph_deep_copy = deepcopy(graph)
     searched_nodes = set()
     source_node = graph_deep_copy.get_node(source_key)
-    for key in graph_deep_copy.nodes.keys():
+    for key in graph_deep_copy.nodes:
         node = graph_deep_copy.get_node(key)
         if key is not source_key:
             node.color = "white"
@@ -116,7 +116,7 @@ if __name__ == "__main__":
 
     g = Graph()
 
-    for a in adj_graph.keys():
+    for a in adj_graph:
         g.add_node(a)
         for b in adj_graph[a]:
             g.add_edge(a, b)
@@ -176,3 +176,5 @@ if __name__ == "__main__":
     # that were a dist d from the source node of a BFS search
     dic2 = {d: list(gen_all_keys_in_dic_with_dist_d((dic, d))) for d in dic.values()}
     # print dic2
+    print "dic size", len(dic), "dic.keys() size", len(dic.keys())
+    print "dic2 size", len(dic2), "dic2.keys() size", len(dic2.keys())
