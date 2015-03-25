@@ -7,7 +7,6 @@ class GraphNode:
         # { adjacent_node.source_key : weight from node to adjacent_node }
         self.adjacent_nodes = {}
         # used for Breadth First Search and Path Finding
-        self.color = "white"
         self.dist = float("inf")
         self.prev = None
 
@@ -45,7 +44,7 @@ class Graph:
         if key in self.nodes:
             return self.nodes[key]
         else:
-            raise KeyError("source_key not found in nodes")
+            raise KeyError("key not found in nodes")
 
     def add_edge(self, a, b):
         if a not in self.nodes:
@@ -71,10 +70,8 @@ def BFS(graph, source_key):
     for key in graph_deep_copy.nodes:
         node = graph_deep_copy.get_node(key)
         if key is not source_key:
-            node.color = "white"
             node.dist = float("inf")
             node.prev = None
-    source_node.color = "grey"
     source_node.dist = 0
     source_node.prev = None
     q = Queue()
@@ -83,12 +80,10 @@ def BFS(graph, source_key):
         node = q.dequeue()
         for child in graph_deep_copy.get_adjacent_nodes(node.key):
             child = graph_deep_copy.get_node(child)
-            if child.color is "white":
+            if child not in searched_nodes:
                 child.dist = node.dist + 1
                 child.prev = node
-                child.color = "grey"
                 q.enqueue(child)
-        node.color = "black"
         searched_nodes.add(node)
     return searched_nodes
 
