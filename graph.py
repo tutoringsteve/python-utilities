@@ -68,8 +68,8 @@ def BFS(graph, source_key):
     searched_nodes = set()
     source_node = graph_deep_copy.get_node(source_key)
     for key in graph_deep_copy.nodes:
-        node = graph_deep_copy.get_node(key)
         if key is not source_key:
+            node = graph_deep_copy.get_node(key)
             node.dist = float("inf")
             node.prev = None
     source_node.dist = 0
