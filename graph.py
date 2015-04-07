@@ -31,20 +31,20 @@ class Graph:
     def __init__(self):
         # source_key : GraphNode dictionary
         self.nodes = {}
-        self.total_nodes = 0
-        self.total_edges = 0
+        self.num_nodes = 0
+        self.num_edges = 0
 
     def add_node(self, key):
         if key not in self.nodes:
             self.nodes[key] = GraphNode(key)
-            self.total_nodes += 1
+            self.num_nodes += 1
         return self.nodes[key]
 
     def get_node(self, key):
         if key in self.nodes:
             return self.nodes[key]
         else:
-            raise KeyError("key not found in nodes")
+            raise KeyError("Key not found, node is not in the graph: get_node request failed")
 
     def add_edge(self, a, b):
         if a not in self.nodes:
@@ -53,12 +53,33 @@ class Graph:
             self.add_node(b)
         if b not in self.get_adjacent_nodes(a):
             self.nodes[a].add_adjacent_node(b)
-            self.total_edges += 1
+            self.num_edges += 1
+
+    def remove_node(self, key):
+        if key in self.nodes:
+            del self.nodes[key]
+            self.num_nodes -= 1
+            for node_key in self.nodes:
+                if self.get_node(node_key).is_adj_to(key):
+                    del self.get_node(node_key).adjacent_nodes[key]
+        else:
+            raise KeyError("Key not found, node is not in the graph: remove_node request failed")
+
+    def remove_edge(self, a, b):
+        if a in self.nodes:
+            if b in self.get_adjacent_nodes(a):
+                del self.get_node(a).adjacent_nodes[b]
+                self.num_edges -= 1
+            else:
+                raise KeyError("Key not found, edge is not in the graph: remove_edge request failed")
+        else:
+            raise KeyError("Key not found, node is not in the graph: remove_edge request failed")
 
     def get_adjacent_nodes(self, key):
         if key in self.nodes:
             return self.nodes[key].adjacent_nodes
-
+        else:
+            raise KeyError("Key not found, node is not in the graph: get_adjacent_nodes request failed")
 
 def BFS(graph, source_key):
     from adts import Queue
@@ -74,16 +95,17 @@ def BFS(graph, source_key):
             node.prev = None
     source_node.dist = 0
     source_node.prev = None
+    searched_nodes.add(source_node)
     q = Queue()
     q.enqueue(source_node)
     while q.size() > 0:
         node = q.dequeue()
-        for child in graph_deep_copy.get_adjacent_nodes(node.key):
-            child = graph_deep_copy.get_node(child)
-            if child not in searched_nodes:
-                child.dist = node.dist + 1
-                child.prev = node
-                q.enqueue(child)
+        for adj_node in graph_deep_copy.get_adjacent_nodes(node.key):
+            adj_node = graph_deep_copy.get_node(adj_node)
+            if adj_node not in searched_nodes:
+                adj_node.dist = node.dist + 1
+                adj_node.prev = node
+                q.enqueue(adj_node)
         searched_nodes.add(node)
     return searched_nodes
 
