@@ -24,7 +24,7 @@ class GraphNode:
             raise KeyError("attempted to get weight of edge to a node that isn't adjacent")
 
     def __str__(self):
-        return str(self.key) + ": " + str([adj_node.key for adj_node in self.adjacent_nodes])
+        return str(self.key) + ": " + str([adj_node for adj_node in self.adjacent_nodes])
 
 
 class Graph:
@@ -100,14 +100,15 @@ def BFS(graph, source_key):
     q.enqueue(source_node)
     while q.size() > 0:
         node = q.dequeue()
-        for adj_node in graph_deep_copy.get_adjacent_nodes(node.key):
-            adj_node = graph_deep_copy.get_node(adj_node)
+        for adj_node_key in graph_deep_copy.get_adjacent_nodes(node.key):
+            adj_node = graph_deep_copy.get_node(adj_node_key)
             if adj_node not in searched_nodes:
-                adj_node.dist = node.dist + 1
-                adj_node.prev = node
+                if adj_node.dist > node.dist:
+                    adj_node.dist = node.dist + 1
+                    adj_node.prev = node
                 q.enqueue(adj_node)
         searched_nodes.add(node)
-    return searched_nodes
+    return {node.key: node for node in searched_nodes}
 
 
 def gen_all_keys_in_dic_with_dist_d(dic_and_d):
@@ -116,6 +117,19 @@ def gen_all_keys_in_dic_with_dist_d(dic_and_d):
         if dic[key] == d:
             yield key
 
+
+def get_path_to_node(node):
+        while node:
+            yield node.key
+            node = node.prev
+        return
+
+
+def get_path_to_node_with_dist_data(node):
+        while node:
+            yield (node.key, node.dist)
+            node = node.prev
+        return
 
 if __name__ == "__main__":
     adj_graph = {0: [2, 10, 9, 5, 12, 11, 17, 7, 13, 14, 6, 3, 4, 15, 1, 16, 8], 1: [2, 17, 0, 37],
@@ -141,18 +155,18 @@ if __name__ == "__main__":
     # matches each source_key in the adj_graph to the BFS results when run using that source_key as a source
     source_key_to_BFS_results = {key: (BFS(g, key)) for key in adj_graph}
     for key in source_key_to_BFS_results:
-        print key, ":", list(node.key for node in source_key_to_BFS_results[key])
+        print key, ":", list(node.key for node in source_key_to_BFS_results[key].values())
     for key in adj_graph:
         BFS(g, key)
 
     # matches each source for a BFS in the adj_graph to a dictionary matching each source_key with the dist to the source as computed from the BFS
     key_to_BFS_results_as_key_to_dist = {
-        source_key: {node.key: node.dist for node in source_key_to_BFS_results[source_key]}
+        source_key: {node.key: node.dist for node in source_key_to_BFS_results[source_key].values()}
         for source_key in adj_graph}
 
     #testing arbitrary nodes for their node.prev tree, which should give shortest paths
     from copy import deepcopy
-    searched_nodes = deepcopy(source_key_to_BFS_results[0])
+    searched_nodes = deepcopy(source_key_to_BFS_results[0]).values()
     target_node = searched_nodes.pop()
     #searching for a node with dist 5 for longer path to examine in the search results of BFS on graph with source node key 0
     while target_node.dist != 5:
@@ -162,12 +176,6 @@ if __name__ == "__main__":
     while target_node.prev:
         print "key", target_node.key, "dist", target_node.dist
         target_node = target_node.prev
-
-    def get_path_to_node(node):
-        while node:
-            yield node.key
-            node = node.prev
-        return
 
     path_lst = list(get_path_to_node(target_node2)) #works
     print path_lst
@@ -195,3 +203,12 @@ if __name__ == "__main__":
     # print dic2
     print "dic size", len(dic), "dic.keys() size", len(dic.keys())
     print "dic2 size", len(dic2), "dic2.keys() size", len(dic2.keys())
+
+    exits = (0, 18, 28)
+    agent_key = 37
+    exit_key_to_search_results = {exit_key: {node.key: node for node in BFS(g, exit_key).values()} for exit_key in exits}
+    results = (exit_key_to_search_results[exit_key][agent_key] for exit_key in exits)
+    results_str = [str(result.prev) for result in results]
+    strange = exit_key_to_search_results[18]
+    for exit_key in exits:
+        print list(get_path_to_node(exit_key_to_search_results[exit_key][agent_key]))
