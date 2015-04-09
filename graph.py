@@ -44,7 +44,7 @@ class Graph:
         if key in self.nodes:
             return self.nodes[key]
         else:
-            raise KeyError("Key not found, node is not in the graph: get_node request failed")
+            raise KeyError("%s not found, node is not in the graph: get_node request failed" % (key,))
 
     def add_edge(self, a, b):
         if a not in self.nodes:
@@ -63,7 +63,7 @@ class Graph:
                 if self.get_node(node_key).is_adj_to(key):
                     del self.get_node(node_key).adjacent_nodes[key]
         else:
-            raise KeyError("Key not found, node is not in the graph: remove_node request failed")
+            raise KeyError("%s not found, node is not in the graph: remove_node request failed" % (key,))
 
     def remove_edge(self, a, b):
         if a in self.nodes:
@@ -71,15 +71,16 @@ class Graph:
                 del self.get_node(a).adjacent_nodes[b]
                 self.num_edges -= 1
             else:
-                raise KeyError("Key not found, edge is not in the graph: remove_edge request failed")
+                raise KeyError("%s not found adjacent to %s, edge is not in the graph: remove_edge request failed" % (a, b))
         else:
-            raise KeyError("Key not found, node is not in the graph: remove_edge request failed")
+            raise KeyError("%s not found, node is not in the graph: remove_edge request failed" % (a,))
 
     def get_adjacent_nodes(self, key):
         if key in self.nodes:
             return self.nodes[key].adjacent_nodes
         else:
-            raise KeyError("Key not found, node is not in the graph: get_adjacent_nodes request failed")
+            raise KeyError("%s not found, node is not in the graph: get_adjacent_nodes request failed" % (key,))
+
 
 def BFS(graph, source_key):
     from adts import Queue
